@@ -3,9 +3,6 @@ const router = express.Router();
 const chatController = require("../controllers/chat.controller");
 const verifyUser = require("../Utills/verifyUser"); 
 
-/**
- * All chat routes require authentication
- */
 router.use(verifyUser);
 
 // ─── Message ──────────────────────────────────────────────

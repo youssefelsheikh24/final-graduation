@@ -2,8 +2,8 @@ const express=require("express");
 const router=express.Router();
 const bundleController=require("../controllers/bundle.controller");
 const {pmtied}=require("../Utills/premtied");
-const verfiyusers = require("../Utills/verfiyusers");
-router.use(verfiyusers);
+const verifyUser = require("../Utills/verifyUser");
+router.use(verifyUser);
 
 
 router.route("/")
