@@ -1,7 +1,7 @@
 const express=require("express");
 const taskController=require("../controllers/task.controller");
 const router=express.Router();
-const verifyUser=require("../Utills/verifyuser")
+const verifyUser=require("../Utills/verifyUser")
 const {permittedTo} =require("../Utills/premittedTo");
 router.use(verifyUser);
 
