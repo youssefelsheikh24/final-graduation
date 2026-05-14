@@ -13,6 +13,6 @@ router.post('/login', userlogcontroller.loginUser);
 router.post('/forgotpassword', userlogcontroller.forgotPassword);
 router.patch('/resetpassword/:token', userlogcontroller.resetPassword);
 router.patch('/updatepassword', verifyUser, userlogcontroller.updatePassword);
-
 router.get('/:id', userlogcontroller.finduserlogbyid);
+router.post("/logout", verifyUser, userlogcontroller.logoutUser);
 module.exports = router;

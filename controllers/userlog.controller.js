@@ -85,3 +85,15 @@ exports.updatePassword = async (req, res, next) => {
   });
 };
  
+exports.logoutUser = async (req, res, next) => {
+  try {
+
+    res.status(200).json({
+      status: "success",
+      message: "Logged out successfully",
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
