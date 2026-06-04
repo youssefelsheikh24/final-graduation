@@ -2,98 +2,77 @@ const {ApiError}=require("../Utills/ApiError");
 const userlogServices=require("../services/userlog.services");
 const { uploadToCloudinary } = require("../Utills/uploadCloudinary");
 
+const catchAsync = (fn) => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch(next);
+};
 
-exports.createuserlog=async(req,res,next)=>{
-   const userData = { ...req.body };
-
-    if (req.files?.profile_picture) {
-      userData.profile_picture = await uploadToCloudinary(
-        req.files.profile_picture[0]
-      );
-    }
-    if (req.files?.national_id) {
-      userData.national_id = await uploadToCloudinary(
-        req.files.national_id[0]
-      );
-    }
+exports.createuserlog = catchAsync(async(req,res,next)=>{
+  const userData = { ...req.body };
+  if (req.files?.profile_picture) {
+    userData.profile_picture = await uploadToCloudinary(req.files.profile_picture[0]);
+  }
+  if (req.files?.national_id) {
+    userData.national_id = await uploadToCloudinary(req.files.national_id[0]);
+  }
   const userlog = await userlogServices.createUserLog(userData);
-    userlog.password=undefined;
-    res.status(201).json({
-      status: "success",
-      data: userlog
-    });
- 
-};
-
-exports.loginUser=async(req,res,next)=>{
-    const token = await userlogServices.loginUser(req.body);
-    res.status(200).json({
-      status: "success",
-      message:"User logged in successfully",
-      data: token
-      
-    });
-};
-
-exports.finduserlogbyid=async(req,res,next)=>{
-  const userlog = await userlogServices.getUserById(req.params.id);
   userlog.password=undefined;
+  res.status(201).json({ status: "success", data: userlog });
+});
+
+exports.loginUser = catchAsync(async(req,res,next)=>{
+  const token = await userlogServices.loginUser(req.body);
   res.status(200).json({
     status: "success",
-    data: userlog
+    message:"User logged in successfully",
+    data: token
   });
-}
+});
 
-exports.forgotPassword = async (req, res, next) => {
-  await userlogServices.forgotPassword(
-    req.body,
-    req.protocol,      // "http" or "https" — used to build the reset URL
-    req.get("host")    // e.g. "localhost:4000"
-  );
- 
+exports.finduserlogbyid = catchAsync(async(req,res,next)=>{
+  const userlog = await userlogServices.getUserById(req.params.id);
+  userlog.password=undefined;
+  res.status(200).json({ status: "success", data: userlog });
+});
+
+exports.forgotPassword = catchAsync(async(req,res,next)=>{
+  await userlogServices.forgotPassword(req.body, req.protocol, req.get("host"));
   res.status(200).json({
     status: "success",
     message: "Reset link sent to your email! Valid for 10 minutes.",
     data: null,
   });
-};
+});
 
-exports.resetPassword = async (req, res, next) => {
+exports.resetPassword = catchAsync(async(req,res,next)=>{
   const token = await userlogServices.resetPassword(
-    req.params.token,              // plain token from the URL
-    req.body.password,             // new password
-    req.body.passwordConfirmation  // must match password
+    req.params.token,
+    req.body.password,
+    req.body.passwordConfirmation
   );
- 
   res.status(200).json({
     status: "success",
     message: "Password reset successfully. You are now logged in.",
-    data: token,   // JWT — same shape as loginUser response
+    data: token,
   });
-};
-exports.updatePassword = async (req, res, next) => {
+});
+
+exports.updatePassword = catchAsync(async(req,res,next)=>{
   const token = await userlogServices.updatePassword(
-    req.user._id,                      
-    req.body.currentPassword,          
-    req.body.password,                 
-    req.body.passwordConfirmation    
+    req.user._id,
+    req.body.currentPassword,
+    req.body.password,
+    req.body.passwordConfirmation
   );
   res.status(200).json({
     status: "success",
     message: "Password updated successfully. You are now logged in.",
     data: token,
   });
-};
- 
-exports.logoutUser = async (req, res, next) => {
-  try {
+});
 
-    res.status(200).json({
-      status: "success",
-      message: "Logged out successfully",
-    });
-
-  } catch (error) {
-    next(error);
-  }
-};
+exports.logoutUser = catchAsync(async(req,res,next)=>{
+  res.status(200).json({
+    status: "success",
+    message: "Logged out successfully",
+  });
+});
