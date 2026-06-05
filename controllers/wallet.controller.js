@@ -1,7 +1,7 @@
 const walletService = require("../services/wallet.services");
-const { ApiError } = require("../error/ApiError");
-const Wallet = require("../models/Wallet");
-const Transaction = require("../models/Transaction");
+const { ApiError } = require("../Utills/ApiError");
+const Wallet = require("../models/wallet.model");
+const Transaction = require("../models/transaction.model");
 const clientBundleModel = require("../models/clientbundel.model");
 const bundleModel = require("../models/bundel.model");
 
@@ -9,6 +9,8 @@ const bundleModel = require("../models/bundel.model");
 exports.getWalletBalance = async (req, res, next) => {
   const wallet = await walletService.getWalletBalance(req.user._id);
   res.status(200).json({
+    status:"success",
+    message: "Wallet balance fetched successfully",
     data: wallet,
   });
 };
