@@ -1,5 +1,5 @@
-const Wallet = require("../models/Wallet");
-const Transaction = require("../models/Transaction");
+const Wallet = require("../models/wallet.model");
+const Transaction = require("../models/transaction.model");
 const {ApiFeatures}=require("../Utills/ApiFeature")
 
 const getMyWalletService = async (req, res, next) => {
