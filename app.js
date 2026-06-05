@@ -13,6 +13,7 @@ const paymentRouter = require('./routes/payment.router');
 const offerRouter = require('./routes/offer.route');
 const requestRouter = require('./routes/request.routes');
 const chatRouter = require('./routes/chat.routes');
+const walletRouter=require("./routes/wallet.routes");
 const {ApiError}=require("./Utills/ApiError");
 
 app.get('/', (req, res) => {
@@ -41,6 +42,7 @@ app.use('/payment', paymentRouter);
 app.use('/offer', offerRouter);
 app.use('/request', requestRouter);
 app.use('/chat', chatRouter);
+app.use("/wallet",walletRouter);
 
 
 
