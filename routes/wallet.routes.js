@@ -5,13 +5,16 @@ const verifyUser=require("../Utills/verifyUser")
 const {permittedTo} =require("../Utills/premittedTo");
 router.use(verifyUser);
 
-router.route("/")
-.post(permittedTo(["client","caregiver"]),walletController.createWallet)
-.get(permittedTo(["admin"]),walletController.getAllWallet);
+router.route("/balance")
+  .get(permittedTo(["client","caregiver"]), walletController.getWalletBalance);
 
-router.route("/:id")
-.get(permittedTo(["client","caregiver","admin"]),walletController.getWalletById)
-.patch(permittedTo(["client","caregiver"]),walletController.updateWallet)
-.delete(permittedTo(["client","caregiver","admin"]),walletController.deleteWallet);
+router.route("/deposit")
+  .post(permittedTo(["client","caregiver"]), walletController.deposit);
+
+router.route("/pay")
+  .post(permittedTo(["client","caregiver"]), walletController.pay);
+
+router.route("/refund")
+  .post(permittedTo(["client","caregiver"]), walletController.refund);
 
 module.exports=router;
